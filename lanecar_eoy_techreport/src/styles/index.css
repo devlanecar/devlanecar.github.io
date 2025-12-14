@@ -1,0 +1,9 @@
+@charset "UTF-8";
+@import 'react-toastify/dist/ReactToastify.css'; 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply font-sans;
+}

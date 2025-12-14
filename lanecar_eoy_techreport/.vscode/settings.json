@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "**/src/styles/index.css": "tailwindcss"
+  },
+
+  //suppress the lint warning specifically for this workspace
+  "css.lint.unknownAtRules": "ignore"
+}
