@@ -6,6 +6,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, CartesianGrid, 
 import { useReactToPrint } from 'react-to-print';
 import pptxgen from "pptxgenjs";
 import ReactPlayer from 'react-player'; 
+import html2canvas from 'html2canvas';
 
 // --- Types ---
 interface MediaGroup {
@@ -63,12 +64,12 @@ const PortfolioCarousel = ({ groups }: { groups: MediaGroup[] }) => {
       </div>
 
       {/* Content Area */}
-      <div className="flex-grow relative bg-gray-50 overflow-hidden flex items-center justify-center">
+      <div className="flex-grow relative bg-white overflow-hidden flex items-center justify-center">
         
         {currentGroup.type === 'video' ? (
-           <div className="w-full h-full flex items-center justify-center bg-black overflow-hidden relative">
+           <div className="w-full h-full flex items-center justify-center bg-white overflow-hidden relative">
               {hasMounted && (
-                <div className="w-full h-full" style={{ mixBlendMode: 'screen' }}>
+                <div className="w-full h-full">
                   <ReactPlayer
                     url={currentGroup.sources[0]}
                     playing={!isPaused}
@@ -78,6 +79,7 @@ const PortfolioCarousel = ({ groups }: { groups: MediaGroup[] }) => {
                     height="100%"
                     controls={false}
                     playsinline
+                    style={{ mixBlendMode: 'screen' }}
                   />
                 </div>
               )}
@@ -122,23 +124,49 @@ const TechReport = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPrinting, setIsPrinting] = useState(false);
   const [showDownloadMenu, setShowDownloadMenu] = useState(false);
+  const [chartImages, setChartImages] = useState<{[key: string]: string}>({});
   const componentRef = useRef<HTMLDivElement>(null);
+
+  // Convert charts to images before printing
+  const convertChartsToImages = async () => {
+    const chartElements = document.querySelectorAll('.recharts-wrapper');
+    const images: {[key: string]: string} = {};
+    
+    for (let i = 0; i < chartElements.length; i++) {
+      const element = chartElements[i] as HTMLElement;
+      try {
+        const canvas = await html2canvas(element, {
+          backgroundColor: '#ffffff',
+          scale: 2,
+          logging: false,
+        });
+        images[`chart-${i}`] = canvas.toDataURL('image/png');
+      } catch (error) {
+        console.error('Error converting chart to image:', error);
+      }
+    }
+    
+    return images;
+  };
 
   // --- PDF PRINT CONFIG ---
   const handlePrint = useReactToPrint({
     contentRef: componentRef,
     documentTitle: 'La Necar Logistics LLC - Tech Report 2025',
-    onBeforeGetContent: () => {
+    onBeforeGetContent: async () => {
         setIsPrinting(true);
-        return new Promise((resolve) => setTimeout(resolve, 500));
+        const images = await convertChartsToImages();
+        setChartImages(images);
+        return new Promise((resolve) => setTimeout(resolve, 1000));
     },
     onAfterPrint: () => {
         setIsPrinting(false);
+        setChartImages({});
     },
     pageStyle: `
       @page { size: A4 landscape; margin: 0; }
       @media print { 
-        body { -webkit-print-color-adjust: exact; }
+        body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         .no-print { display: none !important; }
         .slide-container { 
             display: block !important; 
@@ -147,10 +175,12 @@ const TechReport = () => {
             page-break-after: always !important; 
             break-after: page !important;
         }
-        .recharts-responsive-container { width: 100% !important; height: 100% !important; }
+        .chart-container { position: relative; }
+        .chart-image { display: block !important; width: 100% !important; height: 100% !important; }
+        .recharts-wrapper { display: none !important; }
       }
     `,
-  } as any); // Cast to any to avoid strict type checks on onBeforeGetContent in some versions
+  } as any);
 
   const brandColors = {
     primary: '#000f83',
@@ -218,7 +248,7 @@ const TechReport = () => {
         type: 'grid', 
         sources: ["/images/water_01.jpg", "/images/water_02.jpg", "/images/water_03.jpg"],
         color: "#dbeafe" 
-    },
+    }/*,
     { 
         id: 'video',
         title: "Animated Logo Intro", 
@@ -226,7 +256,7 @@ const TechReport = () => {
         type: 'video', 
         sources: ["/videos/Logo_animation.mov"],
         color: "#ddd6fe" 
-    } 
+    } */
   ];
 
   const COLORS = [brandColors.primary, brandColors.secondary, '#10b981', '#f59e0b', '#8b5cf6'];
@@ -376,6 +406,18 @@ const TechReport = () => {
     setShowDownloadMenu(false);
   };
 
+  // Chart wrapper component - SIMPLIFIED to always show charts during viewing
+  const ChartWrapper = ({ children, chartId }: { children: React.ReactNode, chartId: string }) => {
+    if (isPrinting && chartImages[chartId]) {
+      return (
+        <div className="chart-container w-full h-full">
+          <img src={chartImages[chartId]} alt={`Chart ${chartId}`} className="chart-image w-full h-full object-contain" />
+        </div>
+      );
+    }
+    return <div className="chart-container w-full h-full">{children}</div>;
+  };
+
   // --- SLIDE WRAPPERS ---
   const ContentSlideWrapper = ({ children, bg }: { children: React.ReactNode, bg?: string }) => (
     <div 
@@ -459,17 +501,17 @@ const TechReport = () => {
             <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg">
               <Globe className="mb-4 w-8 h-8 md:w-10 md:h-10" style={{ color: brandColors.secondary }} />
               <h4 className="text-xl md:text-2xl font-bold mb-2 md:mb-4">Global Reach</h4>
-              <p className="text-sm md:text-base text-gray-600">Dominant presence in North America & West Africa. High retention in core markets.</p>
+              <p className="text-sm md:text-base text-gray-600">Dominant presence in North America & West Africa.</p>
             </div>
             <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg">
               <Code className="mb-4 w-8 h-8 md:w-10 md:h-10" style={{ color: brandColors.secondary }} />
               <h4 className="text-xl md:text-2xl font-bold mb-2 md:mb-4">Tech Stack</h4>
-              <p className="text-sm md:text-base text-gray-600">Next.js 14 architecture implemented. EMS core committed & awaiting testing.</p>
+              <p className="text-sm md:text-base text-gray-600">Next.js 14 architecture implemented. EMS core committed to GitHub.</p>
             </div>
             <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg">
               <Palette className="mb-4 w-8 h-8 md:w-10 md:h-10" style={{ color: brandColors.secondary }} />
               <h4 className="text-xl md:text-2xl font-bold mb-2 md:mb-4">Brand Identity</h4>
-              <p className="text-sm md:text-base text-gray-600">Unified design language across Water, IDD, and Lyndhurst verticals.</p>
+              <p className="text-sm md:text-base text-gray-600">Unified design language across IDD transportation and Water delivery service.</p>
             </div>
           </div>
         </ContentSlideWrapper>
@@ -498,25 +540,27 @@ const TechReport = () => {
                 </div>
                 
                 <div className="w-full h-[300px] md:h-[450px] mb-8 bg-white rounded-xl shadow-sm border p-4">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={impressionsData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                            <XAxis dataKey="name" axisLine={false} tickLine={false} dy={10} />
-                            <YAxis axisLine={false} tickLine={false} />
-                            <Tooltip 
-                                contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                            />
-                            <Line 
-                                type="monotone" 
-                                dataKey="value" 
-                                stroke={brandColors.primary} 
-                                strokeWidth={4} 
-                                dot={{ fill: brandColors.primary, r: 4 }}
-                                activeDot={{ r: 8 }}
-                                isAnimationActive={!isPrinting}
-                            />
-                        </LineChart>
-                    </ResponsiveContainer>
+                    <ChartWrapper chartId="chart-0">
+                      <ResponsiveContainer width="100%" height="100%">
+                          <LineChart data={impressionsData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                              <XAxis dataKey="name" axisLine={false} tickLine={false} dy={10} />
+                              <YAxis axisLine={false} tickLine={false} />
+                              <Tooltip 
+                                  contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                              />
+                              <Line 
+                                  type="monotone" 
+                                  dataKey="value" 
+                                  stroke={brandColors.primary} 
+                                  strokeWidth={4} 
+                                  dot={{ fill: brandColors.primary, r: 4 }}
+                                  activeDot={{ r: 8 }}
+                                  isAnimationActive={!isPrinting}
+                              />
+                          </LineChart>
+                      </ResponsiveContainer>
+                    </ChartWrapper>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -553,44 +597,48 @@ const TechReport = () => {
             <div className="flex flex-col">
               <h3 className="text-xl md:text-3xl font-bold mb-6">Traffic by Region</h3>
               <div className="h-[300px] md:h-[400px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie 
-                        data={regionData} 
-                        cx="50%" 
-                        cy="50%" 
-                        labelLine={false} 
-                        outerRadius={120} 
-                        fill="#8884d8" 
-                        dataKey="value" 
-                        label={({ name, value }) => `${name} ${value}%`}
-                        isAnimationActive={!isPrinting}
-                    >
-                      {regionData.map((_, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                    <Legend layout="horizontal" verticalAlign="bottom" align="center" />
-                  </PieChart>
-                </ResponsiveContainer>
+                <ChartWrapper chartId="chart-1">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie 
+                          data={regionData} 
+                          cx="50%" 
+                          cy="50%" 
+                          labelLine={false} 
+                          outerRadius={120} 
+                          fill="#8884d8" 
+                          dataKey="value" 
+                          label={({ name, value }) => `${name} ${value}%`}
+                          isAnimationActive={!isPrinting}
+                      >
+                        {regionData.map((_, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                      <Legend layout="horizontal" verticalAlign="bottom" align="center" />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </ChartWrapper>
               </div>
             </div>
             <div className="flex flex-col">
               <h3 className="text-xl md:text-3xl font-bold mb-6">Top Countries</h3>
               <div className="h-[300px] md:h-[400px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={fullCountryData.slice(0, 10)} layout="vertical" margin={{ left: 40, right: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                    <XAxis type="number" />
-                    <YAxis dataKey="name" type="category" width={90} tick={{fontSize: 11}} interval={0} />
-                    <Tooltip 
-                       cursor={{fill: 'transparent'}}
-                       contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    />
-                    <Bar dataKey="value" fill={brandColors.primary} radius={[0, 4, 4, 0]} isAnimationActive={!isPrinting} />
-                  </BarChart>
-                </ResponsiveContainer>
+                <ChartWrapper chartId="chart-2">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={fullCountryData.slice(0, 10)} layout="vertical" margin={{ left: 40, right: 20 }}>
+                      <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                      <XAxis type="number" />
+                      <YAxis dataKey="name" type="category" width={90} tick={{fontSize: 11}} interval={0} />
+                      <Tooltip 
+                         cursor={{fill: 'transparent'}}
+                         contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                      />
+                      <Bar dataKey="value" fill={brandColors.primary} radius={[0, 4, 4, 0]} isAnimationActive={!isPrinting} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </ChartWrapper>
               </div>
             </div>
           </div>
@@ -607,15 +655,17 @@ const TechReport = () => {
             <div>
               <h3 className="text-2xl md:text-3xl font-bold mb-6">Search Engine Breakdown</h3>
               <div className="h-[250px] md:h-[350px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={searchEngineData}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="name" tick={{fontSize: 12}} />
-                    <YAxis />
-                    <Tooltip cursor={{fill: 'transparent'}} />
-                    <Bar dataKey="value" fill={brandColors.secondary} radius={[4, 4, 0, 0]} label={{ position: 'top' }} isAnimationActive={!isPrinting} />
-                  </BarChart>
-                </ResponsiveContainer>
+                <ChartWrapper chartId="chart-3">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={searchEngineData}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                      <XAxis dataKey="name" tick={{fontSize: 12}} />
+                      <YAxis />
+                      <Tooltip cursor={{fill: 'transparent'}} />
+                      <Bar dataKey="value" fill={brandColors.secondary} radius={[4, 4, 0, 0]} label={{ position: 'top' }} isAnimationActive={!isPrinting} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </ChartWrapper>
               </div>
               <div className="mt-6 md:mt-8 p-4 md:p-6 bg-white rounded-xl shadow-sm border-l-4" style={{ borderColor: brandColors.primary }}>
                 <p className="text-lg md:text-xl font-bold">Google Dominance</p>
@@ -625,25 +675,27 @@ const TechReport = () => {
             <div>
               <h3 className="text-2xl md:text-3xl font-bold mb-6">Source Distribution</h3>
               <div className="h-[300px] md:h-[400px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie 
-                        data={trafficSourceData} 
-                        cx="50%" 
-                        cy="50%" 
-                        innerRadius={60} 
-                        outerRadius={120} 
-                        dataKey="value" 
-                        label={({ name }) => name}
-                        isAnimationActive={!isPrinting}
-                    >
-                      {trafficSourceData.map((_, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
+                <ChartWrapper chartId="chart-4">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie 
+                          data={trafficSourceData} 
+                          cx="50%" 
+                          cy="50%" 
+                          innerRadius={60} 
+                          outerRadius={120} 
+                          dataKey="value" 
+                          label={({ name }) => name}
+                          isAnimationActive={!isPrinting}
+                      >
+                        {trafficSourceData.map((_, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </ChartWrapper>
               </div>
             </div>
           </div>
@@ -657,15 +709,17 @@ const TechReport = () => {
         <ContentSlideWrapper>
           <h2 className="text-3xl md:text-5xl font-bold mb-8" style={{ color: brandColors.primary }}>Most Viewed Pages</h2>
           <div className="h-[300px] md:h-[500px] mb-8 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={topPagesData} layout="vertical" margin={{ left: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                <XAxis type="number" />
-                <YAxis dataKey="page" type="category" width={100} tick={{ fontWeight: 500, fontSize: 12 }} />
-                <Tooltip />
-                <Bar dataKey="views" fill={brandColors.primary} radius={[0, 4, 4, 0]} barSize={24} isAnimationActive={!isPrinting} />
-              </BarChart>
-            </ResponsiveContainer>
+            <ChartWrapper chartId="chart-5">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={topPagesData} layout="vertical" margin={{ left: 20 }}>
+                  <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                  <XAxis type="number" />
+                  <YAxis dataKey="page" type="category" width={100} tick={{ fontWeight: 500, fontSize: 12 }} />
+                  <Tooltip />
+                  <Bar dataKey="views" fill={brandColors.primary} radius={[0, 4, 4, 0]} barSize={24} isAnimationActive={!isPrinting} />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartWrapper>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <div className="p-4 md:p-6 bg-green-50 rounded-xl">
