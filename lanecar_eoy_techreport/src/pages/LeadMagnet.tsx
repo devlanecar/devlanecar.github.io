@@ -92,7 +92,7 @@ const LeadMagnet = () => {
           {/* Left Dark Sidebar (35% width) */}
           <div className="w-[35%] h-full relative flex flex-col justify-between p-12" style={{ backgroundColor: brand.primary }}>
             {/* Top Logo Area */}
-            <div className="w-40 h-40 p-2 bg-white rounded-full flex items-center justify-center mb-12">
+            <div className="w-40 h-40 m-2 p-2 bg-white rounded-full flex items-center justify-center mb-12">
                <img src="/logo.png" alt="La Necar Logistics Logo" className="w-full h-full object-contain" />
             </div>
 
