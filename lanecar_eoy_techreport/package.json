@@ -36,6 +36,7 @@
     "firebase": "^11.9.0",
     "framer-motion": "^12.16.0",
     "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.12.1",
     "lucide-react": "^0.513.0",
     "pptxgenjs": "^4.0.1",
     "qrcode.react": "^4.2.0",
