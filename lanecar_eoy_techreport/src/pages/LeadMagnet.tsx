@@ -9,13 +9,12 @@ import {
   Clock, 
   Users, 
   HeartHandshake, 
-  Phone, 
-  Mail, 
+  Phone,
   Globe, 
   Quote, 
   CheckCircle2,
-  Accessibility,
-  Car
+  Car,
+  Trophy
 } from 'lucide-react';
 
 const LeadMagnet = () => {
@@ -36,7 +35,7 @@ const LeadMagnet = () => {
     hero: "https://infinitelovinghands.com/wp-content/uploads/2025/07/a-caregiver-who-puts-an-elderly-person-in-a-long-t-2025-03-13-23-31-57-utc-scaled.jpg",
     safety: "https://brodaseating.com/wp-content/uploads/2025/03/BRO_BecomeNEMTDriver_Blog_bestpractice.jpg",
     gps: "https://www.angelsense.com/wp-content/uploads/2021/01/10-min2.jpg",
-    accessible: "https://wheelersvanrentals.com/wp-content/uploads/2021/10/accesible.jpg",
+    accessible: "/images/wheelchair.jpg",
     family: "https://cdn.prod.website-files.com/63982b47e742b8ffdf13610b/66d6240535007e91244bf13f_49.jpg",
     caring: "https://elderaffairs.org/wp-content/uploads/elder-transportation-scaled.jpeg",
   };
@@ -133,7 +132,7 @@ const LeadMagnet = () => {
               </span>
               
               <h1 className="text-5xl font-extrabold leading-tight mb-6 text-gray-900">
-                Providing Safe, <br/>
+                Supporting Safe, <br/>
                 <span style={{ color: brand.primary }}>Reliable Transportation</span> <br/>
                 for Individuals with IDD
               </h1>
@@ -152,7 +151,7 @@ const LeadMagnet = () => {
             <div className="absolute bottom-16 left-16 right-16 p-4 bg-gray-50 border-l-8" style={{ borderColor: brand.primary }}>
                <h3 className="text-lg font-bold mb-2" style={{ color: brand.primary }}>Transportation Isn't Just a Ride</h3>
                <p className="text-gray-600 text-sm italic">
-                 "For the loved one you support, every trip is an opportunity to participate in daily life safely and with dignity. Transportation, when done right, supports connection, routine, and independence.<br /><br />That’s why we created this guide; to help families make confident decisions when arranging transportation for individuals with IDD."
+                 "For the loved one you support, every trip is an opportunity to participate in daily life safely and dignity. This brochure is designed to help families make confident decisions when arranging transportation for individuals with IDD."
                </p>
             </div>
           </div>
@@ -165,7 +164,7 @@ const LeadMagnet = () => {
           <div className="p-12 flex-grow flex flex-col gap-8">
             <div className="mb-4">
               <h3 className="text-3xl font-bold mb-2 text-gray-900">5 Key Factors to Consider</h3>
-              <p className="text-gray-500">Essential criteria for ensuring safety and dignity.</p>
+              <p className="text-gray-500">Essential Criteria for ensuring safety and dignity in IDD transportation.</p>
             </div>
 
             {/* Factor 1 */}
@@ -176,17 +175,13 @@ const LeadMagnet = () => {
               <div>
                 <h4 className="text-xl font-bold mb-2" style={{ color: brand.primary }}>1. DDD-Approved, Specialized Drivers</h4>
                 <p className="text-sm text-gray-600 leading-relaxed mb-2">
-                  To support the safety, well-being, & dignity of your loved one, drivers should be trained to:
+                  Safe, dignified transportation begins with ensuring drivers are vetted and trained to:
                 </p>
                 <ul className="text-xs text-gray-500 space-y-1 ml-1">
                     <li className="flex items-center gap-2"><CheckCircle2 size={12} color={brand.secondary} /> Recognize and respond to diverse communication needs, including non-verbal methods</li>
                     <li className="flex items-center gap-2"><CheckCircle2 size={12} color={brand.secondary} /> Manage anxiety, behavioral challenges, or sensory sensitivities professionally and calmly</li>
                     <li className="flex items-center gap-2"><CheckCircle2 size={12} color={brand.secondary} /> Ensure consistent routines during transit to reduce stress and support predictability</li>
                 </ul>
-                <div className="flex gap-2">
-                   <span className="px-2 py-1 bg-gray-100 text-xs text-gray-600 rounded">Behavioral Support</span>
-                   <span className="px-2 py-1 bg-gray-100 text-xs text-gray-600 rounded">Sensory Awareness</span>
-                </div>
               </div>
             </div>
 
@@ -237,7 +232,7 @@ const LeadMagnet = () => {
                   </p>
                </div>
                <div className="bg-gray-50 p-6 rounded-2xl border-t-4" style={{ borderColor: brand.secondary }}>
-                  <div className="mb-3" style={{ color: brand.primary }}><Clock size={150}/></div>
+                  <div className="mb-3" style={{ color: brand.primary }}><Clock size={120}/></div>
                   <h4 className="font-bold text-lg mb-2">5. Quick Resolution</h4>
                   <p className="text-xs text-gray-600">
                     Even with careful planning, challenges can occur during transit. Select a provider with a responsive support team, capable of addressing concerns immediately.
@@ -269,7 +264,7 @@ const LeadMagnet = () => {
              <h3 className="text-3xl font-bold mb-12 uppercase tracking-widest text-center" style={{ color: brand.primary }}>Why Ride With Us</h3>
              
              <div className="grid grid-cols-2 gap-6">
-                {/* Feature 1 with image */}
+                {/* Feature 1 */}
                 <div className="bg-white p-6 shadow-sm border-l-4 mb-5" style={{ borderColor: brand.primary }}>
                    <div className="flex items-center gap-3 mb-3">
                       <ShieldCheck className="text-green-600" size={24} />
@@ -299,10 +294,19 @@ const LeadMagnet = () => {
                 {/* Feature 4 */}
                 <div className="bg-white p-6 shadow-sm border-l-4 mt-5" style={{ borderColor: brand.secondary }}>
                    <div className="flex items-center gap-3 mb-3">
-                      <Car style={{ color: brand.secondary }} size={24} />
+                      <Car style={{ color: brand.secondary }} size={48} />
                       <h4 className="font-bold text-lg text-gray-800">Wheelchair Accessibility and Sensory Aware Rides</h4>
                    </div>
                    <p className="text-sm text-gray-600">La Necar provides inclusive and comfortable transportation for every mobility need, helping your loved one travel with dignity, confidence, and ease.</p>
+                </div>
+
+                {/* Feature 5 */}
+                <div className="bg-white p-6 shadow-sm border-l-4 mb-5" style={{ borderColor: brand.primary }}>
+                   <div className="flex items-center gap-3 mb-3">
+                      <Trophy className="text-green-600" size={24} />
+                      <h4 className="font-bold text-lg text-gray-800">85% Driver Retention</h4>
+                   </div>
+                   <p className="text-sm text-gray-600">La Necar Logistics LLC achieved 85% driver retention over the past two years.</p>
                 </div>
              </div>
           </div>
