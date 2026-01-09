@@ -151,7 +151,7 @@ const LeadMagnet = () => {
             <div className="absolute bottom-16 left-16 right-16 p-4 bg-gray-50 border-l-8" style={{ borderColor: brand.primary }}>
                <h3 className="text-lg font-bold mb-2" style={{ color: brand.primary }}>Transportation Isn't Just a Ride</h3>
                <p className="text-gray-600 text-sm italic">
-                 "For the loved one you support, every trip is an opportunity to participate in daily life safely and dignity. This brochure is designed to help families make confident decisions when arranging transportation for individuals with IDD."
+                 "For the loved one you support, every trip is an opportunity to participate in daily life safely and with dignity. This brochure is designed to help families make confident decisions when arranging transportation for individuals with IDD."
                </p>
             </div>
           </div>
