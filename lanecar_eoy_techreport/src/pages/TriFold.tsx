@@ -41,13 +41,12 @@ const TriFold = () => {
   // --- Images ---
   const images = {
     hero: '/images/hero.jpg',
-    safety:
-      'https://brodaseating.com/wp-content/uploads/2025/03/BRO_BecomeNEMTDriver_Blog_bestpractice.jpg',
+    safety: 'https://brodaseating.com/wp-content/uploads/2025/03/BRO_BecomeNEMTDriver_Blog_bestpractice.jpg',
     gps: 'https://www.angelsense.com/wp-content/uploads/2021/01/10-min2.jpg',
     accessible: '/images/wheelchair.jpg',
-    family:
-      'https://cdn.prod.website-files.com/63982b47e742b8ffdf13610b/66d6240535007e91244bf13f_49.jpg',
+    family: 'https://cdn.prod.website-files.com/63982b47e742b8ffdf13610b/66d6240535007e91244bf13f_49.jpg',
     caring: '/images/bg_img.jpg',
+    scanme: '/images/qrscan.png',
   };
 
   const handlePrint = useReactToPrint(
@@ -693,32 +692,29 @@ const TriFold = () => {
               </p>
             </div>
 
-            {/* Yellow CTA - fills remaining space */}
+            {/* Yellow CTA - Adjusted: Text on top, Image Bold & Visible below */}
             <div
-              className="mt-auto flex-1 flex flex-col justify-center p-6 rounded-xl"
+              className="mt-auto w-full flex flex-col items-center justify-center p-5 rounded-xl shadow-md"
               style={{ backgroundColor: brand.secondary }}
             >
-              <h4
-                className="text-xl font-black uppercase leading-tight mb-4"
-                style={{ color: brand.primary }}
-              >
-                Empowering Independence Starts Here.
-              </h4>
-              <p className="text-[12px] text-blue-900/80 mb-5 leading-relaxed">
-                Contact us today to schedule safe, dignified transportation for
-                your loved one.
-              </p>
-              <div className="flex flex-col gap-3" style={{ color: brand.primary }}>
-                <div className="flex items-center gap-3">
-                  <Phone size={20} />
-                  <span className="font-black text-xl">+1 855-202-9967</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Globe size={20} />
-                  <span className="font-bold text-sm">
-                    lanecarlogisticsllc.com
-                  </span>
-                </div>
+              {/* Text section - Centered & Above Image */}
+              <div className="text-center w-full mb-2">
+                <h4
+                  className="text-lg font-black uppercase leading-tight"
+                  style={{ color: brand.primary }}
+                >
+                  Empowering Independence Starts Here.
+                </h4>
+              </div>
+
+              {/* QR code section - Bold, Visible, with White Frame for contrast */}
+              <div className="shrink-0 p-2 rounded-lg shadow-sm">
+                <div
+                  className="w-40 h-40 bg-contain bg-no-repeat bg-center"
+                  style={{ backgroundImage: `url(${images.scanme})` }}
+                  role="img"
+                  aria-label="QR code to contact La Necar"
+                />
               </div>
             </div>
           </div>
