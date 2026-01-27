@@ -336,7 +336,7 @@ const TriFold = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 to-transparent"></div>
 
               {/* Badge */}
-              <div className="absolute top-4 right-0 bg-amber-500 text-white text-[10px] font-bold px-4 py-1.5 rounded-l-md shadow-md uppercase tracking-wider">
+              <div className="absolute top-4 right-0 bg-amber-500 text-white text-[10px] font-bold px-4 h-[26px] flex items-center justify-center leading-none pb-[1px] rounded-l-md shadow-md uppercase tracking-wider">
                 Family Resource Guide 2026
               </div>
 
@@ -703,7 +703,7 @@ const TriFold = () => {
                   className="text-lg font-black uppercase leading-tight"
                   style={{ color: brand.primary }}
                 >
-                  Empowering Independence Starts Here.
+                  Your Partner in Safe, Everyday Mobility.
                 </h4>
               </div>
 
