@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/pages/techreport.tsx"],"version":"5.8.3"}
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/pages/leadmagnet.tsx","./src/pages/techreport.tsx","./src/pages/transitionmain.tsx","./src/pages/transitionmin.tsx","./src/pages/trifold.tsx"],"version":"5.8.3"}

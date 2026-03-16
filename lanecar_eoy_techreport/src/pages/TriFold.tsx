@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import html2canvas from 'html2canvas';
 import {
@@ -18,8 +18,6 @@ import {
   Trophy,
   Mail,
   Image,
-  ShieldQuestionIcon,
-  ShieldQuestion,
   FileQuestion,
 } from 'lucide-react';
 
@@ -27,7 +25,6 @@ const TriFold = () => {
   const componentRef = useRef<HTMLDivElement>(null);
   const page1Ref = useRef<HTMLDivElement>(null);
   const page2Ref = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
 
   // --- Brand Configuration ---
   const brand = {

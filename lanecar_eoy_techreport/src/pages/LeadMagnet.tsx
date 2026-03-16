@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { 
   Download, 
@@ -19,7 +19,6 @@ import {
 
 const LeadMagnet = () => {
   const componentRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
 
   // --- Brand Configuration ---
   const brand = {
@@ -72,8 +71,6 @@ const LeadMagnet = () => {
       <div className="fixed top-6 right-6 z-50">
         <button
           onClick={() => handlePrint()}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
           className="flex items-center gap-3 px-8 py-4 rounded-full shadow-2xl transition-all transform hover:scale-105"
           style={{ backgroundColor: brand.secondary, color: brand.primary }}
         >

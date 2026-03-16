@@ -56,7 +56,7 @@ export default function TransitionMin() {
         format: 'a3',
       });
 
-      const capturePage = async (ref: React.RefObject<HTMLDivElement>, pageNum: number) => {
+      const capturePage = async (ref: React.RefObject<HTMLDivElement | null>, pageNum: number) => {
         if (!ref.current) return;
         const canvas = await html2canvas(ref.current, {
           scale: 2, // Balanced for quality vs file size
