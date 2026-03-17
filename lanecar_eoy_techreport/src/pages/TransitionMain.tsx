@@ -3,7 +3,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { 
   Download, Phone, Globe, Mail, Quote, 
-  ShieldCheck, Users, Clock, Navigation, CheckCircle2 
+  ShieldCheck, Users, Navigation, 
+  Car, FileText, CheckCircle2
 } from 'lucide-react';
 
 export default function TransitionMain() {
@@ -32,11 +33,16 @@ export default function TransitionMain() {
   }, []);
 
   const brand = {
-    primary: '#000f83', // Deep Blue
+    primary: '#000f83',   // Deep Blue
     secondary: '#f5ab1b', // Amber/Gold
     dark: '#1e293b', 
     light: '#f8fafc',
     white: '#ffffff',
+  };
+
+  const images = {
+    hero: "https://infinitelovinghands.com/wp-content/uploads/2025/07/a-caregiver-who-puts-an-elderly-person-in-a-long-t-2025-03-13-23-31-57-utc-scaled.jpg",
+    caring: "https://elderaffairs.org/wp-content/uploads/elder-transportation-scaled.jpeg",
   };
 
   const handleDownload = async () => {
@@ -55,20 +61,19 @@ export default function TransitionMain() {
       const capturePage = async (ref: React.RefObject<HTMLDivElement | null>, pageNum: number) => {
         if (!ref.current) return;
         const canvas = await html2canvas(ref.current, {
-          scale: 3, // High DPI boost
+          scale: 3, 
           useCORS: true,
           logging: false,
           backgroundColor: '#ffffff',
         });
         const imgData = canvas.toDataURL('image/jpeg', 1.0);
         if (pageNum > 1) pdf.addPage();
-        // A3 dimensions: 420mm x 297mm
         pdf.addImage(imgData, 'JPEG', 0, 0, 420, 297);
       };
 
       await capturePage(sheet1Ref, 1);
       await capturePage(sheet2Ref, 2);
-      pdf.save('La_Necar_Main_Brochure_A3_Imposed.pdf');
+      pdf.save('La_Necar_Main_Brochure_A3.pdf');
     } catch (error) {
       console.error('Error generating PDF:', error);
     } finally {
@@ -104,128 +109,120 @@ export default function TransitionMain() {
         className="flex bg-white shadow-2xl relative overflow-hidden"
         style={{ width: '1190px', height: '842px' }}
       >
-        {/* FOLD LINE INDICATOR */}
         <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-gray-200 border-r border-dashed border-gray-300 z-50"></div>
 
-        {/* --- PAGE 4: BACK COVER (Left Side) --- */}
+        {/* --- BACK COVER (Left Side) --- */}
         <div className="w-[595px] h-full relative flex flex-col text-white" style={{ backgroundColor: brand.primary }}>
-          <div className="absolute top-0 right-0 w-64 h-64 opacity-10 pointer-events-none">
+          {/* Decorative background element */}
+          <div className="absolute top-0 right-0 w-64 h-64 opacity-5 pointer-events-none">
             <svg viewBox="0 0 100 100" className="w-full h-full fill-current"><polygon points="100,0 100,100 0,0" /></svg>
           </div>
 
-          <div className="p-14 flex-1 flex flex-col z-10">
-            <h2 className="text-4xl font-extrabold leading-tight mb-2">
-              Your partner in <br/>
-              <span style={{ color: brand.secondary }}>safe, every day mobility</span>
-            </h2>
+          <div className="p-12 flex-1 flex flex-col z-10 justify-between">
             
-            <div className="w-20 h-1.5 mb-10" style={{ backgroundColor: brand.secondary }}></div>
+            {/* Top: Headline */}
+            <div>
+              <h2 className="text-4xl font-extrabold leading-tight mb-2">
+                Your partner in <br/>
+                <span style={{ color: brand.secondary }}>dependable IDD Transport</span>
+              </h2>
+              <div className="w-20 h-1.5 mb-8 mt-4" style={{ backgroundColor: brand.secondary }}></div>
+            </div>
 
-            <div className="mb-10">
-              <h3 className="text-xl font-bold mb-6 text-white uppercase tracking-wider text-sm">Why Families Trust La Necar Logistics</h3>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="bg-white/10 p-4 rounded-lg border border-white/20">
-                  <span className="block text-3xl font-black mb-1" style={{ color: brand.secondary }}>280k+</span>
-                  <p className="text-xs leading-relaxed opacity-90">miles completed in 2025, supporting daily independence and community access</p>
+            {/* Middle 1: Impact */}
+            <div className="mb-8">
+              <h3 className="text-lg font-bold mb-4 text-white uppercase tracking-wider">Our Impact</h3>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="bg-white/10 p-4 rounded-lg border border-white/20 text-center">
+                  <span className="block text-xl font-black mb-1" style={{ color: brand.secondary }}>280,000+</span>
+                  <p className="text-[10px] uppercase tracking-widest opacity-90 leading-tight">miles in 2025</p>
                 </div>
-                <div className="bg-white/10 p-4 rounded-lg border border-white/20">
-                  <span className="block text-3xl font-black mb-1" style={{ color: brand.secondary }}>18k+</span>
-                  <p className="text-xs leading-relaxed opacity-90">successful trips, including medical, vocational, and community transportation</p>
+                <div className="bg-white/10 p-4 rounded-lg border border-white/20 text-center">
+                  <span className="block text-xl font-black mb-1" style={{ color: brand.secondary }}>18,000+</span>
+                  <p className="text-[10px] uppercase tracking-widest opacity-90 leading-tight">successful trips</p>
                 </div>
-                <div className="bg-white/10 p-4 rounded-lg border border-white/20">
-                  <span className="block text-3xl font-black mb-1" style={{ color: brand.secondary }}>Low</span>
-                  <p className="text-xs leading-relaxed opacity-90">discharge rates, reflecting satisfaction and long-term partnerships with families</p>
-                </div>
-                <div className="bg-white/10 p-4 rounded-lg border border-white/20">
-                  <span className="block text-3xl font-black mb-1" style={{ color: brand.secondary }}>95%</span>
-                  <p className="text-xs leading-relaxed opacity-90">on-time performance in 2025, delivering reliability families can plan around</p>
+                <div className="bg-white/10 p-4 rounded-lg border border-white/20 text-center">
+                  <span className="block text-xl font-black mb-1" style={{ color: brand.secondary }}>95%</span>
+                  <p className="text-[10px] uppercase tracking-widest opacity-90 leading-tight">on‑time performance</p>
                 </div>
               </div>
             </div>
 
-            <div className="flex-1">
-              <h3 className="text-sm font-bold mb-4 text-white uppercase tracking-wider">What Families Are Saying</h3>
+            {/* Middle 2: Testimonials */}
+            <div>
+              <h3 className="text-lg font-bold mb-4 text-white uppercase tracking-wider">Hear From Families</h3>
               <div className="space-y-4">
                 <div className="flex gap-4">
                   <Quote size={20} className="shrink-0 mt-1" style={{ color: brand.secondary }} />
                   <div>
-                    <p className="text-xs italic leading-relaxed opacity-90">"The team is very polite and accommodating, and I appreciate the texts as well. We love being La Necar customers!"</p>
-                    <p className="text-xs font-bold mt-2">— Alex, Dad</p>
+                    <p className="text-sm italic leading-relaxed opacity-90">“The team is very polite and accommodating, and I appreciate the texts as well. We love being La Necar customers.”</p>
+                    <p className="text-xs font-bold mt-2 uppercase tracking-wide">- Alex, Dad</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <Quote size={20} className="shrink-0 mt-1" style={{ color: brand.secondary }} />
                   <div>
-                    <p className="text-xs italic leading-relaxed opacity-90">"As a parent, I genuinely appreciate the exceptional kindness, patience and care my child receives from her driver. She consistently ensures my daughter feels safe and supported. This gives me peace of mind."</p>
-                    <p className="text-xs font-bold mt-2">— Emma, Mom</p>
+                    <p className="text-sm italic leading-relaxed opacity-90">"As a parent, I genuinely appreciate the exceptional kindness, patience, and care my child receives from her driver. She consistently ensures my daughter feels safe and supported. This gives me peace of mind."</p>
+                    <p className="text-xs font-bold mt-2 uppercase tracking-wide">- Emma, Mom</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <Quote size={20} className="shrink-0 mt-1" style={{ color: brand.secondary }} />
                   <div>
-                    <p className="text-xs italic leading-relaxed opacity-90">"I'm so satisfied with La Necar transportation. The driver is always on time to pick up my child, both at home and at the program which makes everything smooth."</p>
-                    <p className="text-xs font-bold mt-2">— Olivia, Mom</p>
+                    <p className="text-sm italic leading-relaxed opacity-90">"I’m so satisfied with La Necar transportation. The driver is always on time to pick up my child, both at home and at the program, which makes everything smooth."</p>
+                    <p className="text-xs font-bold mt-2 uppercase tracking-wide">- Olivia, Mom</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-black/20 p-10 flex justify-between items-center z-10">
+          {/* Bottom: Contact Block */}
+          <div className="bg-black/20 px-12 py-8 flex justify-between items-center z-10 border-t border-white/10">
             <div className="space-y-2">
-              <h4 className="font-bold text-lg mb-2" style={{ color: brand.secondary }}>Contact Us Today</h4>
-              <p className="flex items-center gap-2 text-sm"><Phone size={16}/> +1 855-202-9967</p>
-              <p className="flex items-center gap-2 text-sm"><Mail size={16}/> services@lanecarlogisticsllc.com</p>
-              <p className="flex items-center gap-2 text-sm"><Globe size={16}/> lanecarlogisticsllc.com</p>
+              <h4 className="font-bold text-xl mb-2" style={{ color: brand.secondary }}>Contact Us Today</h4>
+              <p className="flex items-center gap-3 text-sm font-medium"><Phone size={16}/> +1 855-202-9967</p>
+              <p className="flex items-center gap-3 text-sm font-medium"><Mail size={16}/> services@lanecarlogisticsllc.com</p>
+              <p className="flex items-center gap-3 text-sm font-medium"><Globe size={16}/> lanecarlogisticsllc.com</p>
             </div>
-            <div className="bg-white p-3 rounded flex flex-col items-center">
-              <div className="w-16 h-16 border-4 border-black flex items-center justify-center font-mono text-[8px] text-black">
+            <div className="bg-white p-2 rounded flex flex-col items-center justify-center h-[72px] w-[72px]">
+              <div className="w-full h-full border-2 border-black flex items-center justify-center font-mono text-[9px] text-black">
                 (Barcode)
               </div>
             </div>
           </div>
         </div>
 
-
-        {/* --- PAGE 1: FRONT COVER (Right Side) --- */}
+        {/* --- FRONT COVER (Right Side) --- */}
         <div className="w-[595px] h-full relative flex flex-col bg-white">
-          <div className="h-6 w-full" style={{ backgroundColor: brand.secondary }}></div>
-          <div className="absolute top-0 right-0 w-32 h-32" style={{ backgroundColor: brand.primary, clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }}></div>
+          <div className="h-4 w-full" style={{ backgroundColor: brand.secondary }}></div>
+          <div className="absolute top-0 right-0 w-24 h-24" style={{ backgroundColor: brand.primary, clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }}></div>
 
-          <div className="p-14 flex-1 flex flex-col justify-center relative z-10">
-            <h4 className="font-bold tracking-widest uppercase text-sm mb-4" style={{ color: brand.secondary }}>
-              La Necar Logistics
-            </h4>
+          <div className="px-12 pt-16 pb-12 flex-1 flex flex-col relative z-10">
+            {/* CORPORATE LOGO SPACE */}
+            <div className="mb-12 w-48 h-16 relative">
+              <img src="/logo.png" alt="La Necar Logistics Logo" className="w-full h-full object-contain object-left" />
+            </div>
+
             <h1 className="text-5xl font-black leading-[1.1] mb-6" style={{ color: brand.primary }}>
-              Supporting Safe, Reliable Transit for Individuals with Intellectual and Developmental Disabilities (IDD)
+              IDD TRANSPORTATION <br/> SERVICE
             </h1>
             
-            <div className="w-16 h-2 mb-8" style={{ backgroundColor: brand.secondary }}></div>
+            <div className="w-24 h-2 mb-8" style={{ backgroundColor: brand.secondary }}></div>
 
-            <h2 className="text-2xl font-bold text-gray-800 leading-snug mb-10">
-              What Families and Caregivers Must Know Before Selecting a Transportation Provider
+            <h2 className="text-2xl font-bold text-gray-800 leading-snug">
+              What Families & Caregivers Must Know Before Selecting a Transport Provider
             </h2>
-
-            <div className="bg-gray-50 p-8 border-l-4" style={{ borderColor: brand.primary }}>
-              <h3 className="text-xl font-bold mb-3" style={{ color: brand.primary }}>Transportation Isn't Just a Ride,</h3>
-              <p className="text-gray-600 leading-relaxed font-medium">
-                It's an opportunity to participate in daily life with safety and dignity. That's why we created this guide; to help families make confident decisions when arranging rides for the individuals they support.
-              </p>
-            </div>
           </div>
 
-          <div className="h-[35%] w-full relative bg-gray-200">
+          {/* Hero Image Bottom Area */}
+          <div className="h-[45%] w-full relative bg-gray-200">
             <img 
-              src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1200" 
+              src={images.hero} 
               alt="Caregiver assisting individual"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-            <div className="absolute bottom-6 left-14 right-14">
-              <div className="bg-white/95 backdrop-blur py-3 px-6 inline-block rounded-lg shadow-xl border-b-4" style={{ borderColor: brand.secondary }}>
-                <p className="font-bold text-sm uppercase tracking-wide" style={{ color: brand.primary }}>A Guide for Families & Support Coordinators</p>
-              </div>
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
           </div>
         </div>
       </div>
@@ -240,142 +237,158 @@ export default function TransitionMain() {
       >
         <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-gray-200 border-r border-dashed border-gray-300 z-50"></div>
 
-        {/* --- PAGE 2: INSIDE LEFT (Left Side) --- */}
-        <div className="w-[595px] h-full relative p-14 flex flex-col bg-[#f8fafc]">
-          <div className="mb-12">
-            <h2 className="text-4xl font-black uppercase leading-none" style={{ color: brand.primary }}>
-              5 Key Factors <br/> <span style={{ color: brand.secondary }}>To Consider</span>
+        {/* --- INSIDE LEFT (Left Side): 5 Key Factors --- */}
+        <div className="w-[595px] h-full relative p-12 flex flex-col bg-[#f8fafc]">
+          
+          <div className="mb-8 border-b-2 border-gray-200 pb-4">
+            <h2 className="text-3xl font-black uppercase leading-tight" style={{ color: brand.primary }}>
+              5 KEY FACTORS TO CONSIDER:
             </h2>
-            <p className="mt-4 font-bold text-gray-600 text-lg leading-snug">
-              Essential criteria for ensuring supportive and dignified IDD Transportation
-            </p>
           </div>
 
-          {/* Factor 1 */}
-          <div className="relative mb-10 bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-            <div className="absolute -top-6 -left-4 text-7xl font-black opacity-10" style={{ color: brand.primary }}>01</div>
-            <h3 className="text-2xl font-bold mb-4 flex items-center gap-3" style={{ color: brand.primary }}>
-              <Users size={28} style={{ color: brand.secondary }} />
-              1. Trained, Specialized Drivers
-            </h3>
-            <p className="text-gray-700 mb-4 text-sm font-medium">
-              To support the well-being, and dignity of your individual during rides, look out for drivers who are trained to:
-            </p>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-3">
-                <CheckCircle2 size={18} className="shrink-0 mt-0.5" style={{ color: brand.secondary }} />
-                <span className="text-sm text-gray-700 leading-tight">Recognize and respond to unique communication needs, including non-verbal methods</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle2 size={18} className="shrink-0 mt-0.5" style={{ color: brand.secondary }} />
-                <span className="text-sm text-gray-700 leading-tight">Manage anxiety, behavioral challenges, or sensory sensitivities professionally</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle2 size={18} className="shrink-0 mt-0.5" style={{ color: brand.secondary }} />
-                <span className="text-sm text-gray-700 leading-tight">Ensure consistent routines during transit to support predictability</span>
-              </li>
-            </ul>
-          </div>
+          <div className="flex-1 flex flex-col justify-between">
+            
+            {/* Factor 1 */}
+            <div className="flex gap-4">
+              <div className="flex-shrink-0 w-10 h-10 rounded flex items-center justify-center shadow-sm bg-white border border-gray-100">
+                <Users size={20} style={{ color: brand.primary }} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold mb-1" style={{ color: brand.primary }}>1. Trained, Specialized Drivers</h3>
+                <p className="text-[13px] text-gray-700 leading-relaxed font-medium">
+                  Drivers should be able to understand diverse communication needs, manage sensory sensitivities, and maintain consistent routines that support comfort, dignity, and predictability.
+                </p>
+              </div>
+            </div>
 
-          {/* Factor 2 */}
-          <div className="relative mb-10 bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-            <div className="absolute -top-6 -left-4 text-7xl font-black opacity-10" style={{ color: brand.primary }}>02</div>
-            <h3 className="text-2xl font-bold mb-3 flex items-center gap-3" style={{ color: brand.primary }}>
-              <ShieldCheck size={28} style={{ color: brand.secondary }} />
-              2. Driver Retention
-            </h3>
-            <p className="text-sm text-gray-700 leading-relaxed">
-              Consistency supports predictable routines for your individual. Look out for providers with high driver retention rates, as this often leads to smoother trips and greater confidence for families.
-            </p>
-          </div>
+            {/* Factor 2 */}
+            <div className="flex gap-4">
+              <div className="flex-shrink-0 w-10 h-10 rounded flex items-center justify-center shadow-sm bg-white border border-gray-100">
+                <ShieldCheck size={20} style={{ color: brand.primary }} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold mb-1" style={{ color: brand.primary }}>2. DDD Standards</h3>
+                <p className="text-[13px] text-gray-700 leading-relaxed font-medium">
+                  The provider must follow all DDD-approved standards that protect the individual you support. This includes proper licensing, compliance with HIPAA, state regulations, and established safety protocols.
+                </p>
+              </div>
+            </div>
 
-          {/* Factor 3 */}
-          <div className="relative bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-            <div className="absolute -top-6 -left-4 text-7xl font-black opacity-10" style={{ color: brand.primary }}>03</div>
-            <h3 className="text-2xl font-bold mb-3 flex items-center gap-3" style={{ color: brand.primary }}>
-              <Navigation size={28} style={{ color: brand.secondary }} />
-              3. Visibility Into Every Trip
-            </h3>
-            <p className="text-sm text-gray-700 leading-relaxed mb-4">
-              Knowing where your individual is in transit, and who to contact when you have a concern is real peace of mind. Ensure providers can deliver:
-            </p>
-            <ul className="space-y-2">
-              <li className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: brand.secondary }}></div>
-                <span className="text-sm text-gray-700 font-medium">Real-time GPS tracking</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: brand.secondary }}></div>
-                <span className="text-sm text-gray-700 font-medium">Instant notifications for pickup and drop-off</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: brand.secondary }}></div>
-                <span className="text-sm text-gray-700 font-medium">Direct communication with drivers and live support staff</span>
-              </li>
-            </ul>
+            {/* Factor 3 */}
+            <div className="flex gap-4">
+              <div className="flex-shrink-0 w-10 h-10 rounded flex items-center justify-center shadow-sm bg-white border border-gray-100">
+                <Navigation size={20} style={{ color: brand.primary }} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold mb-1" style={{ color: brand.primary }}>3. Visibility Into Every Trip</h3>
+                <p className="text-[13px] text-gray-700 leading-relaxed font-medium">
+                  Look out for providers who offer real-time GPS tracking, pickup and drop-off notifications, and direct access to drivers or support staff. Knowing where your individual is or who to contact is real peace of mind.
+                </p>
+              </div>
+            </div>
+
+            {/* Factor 4 */}
+            <div className="flex gap-4">
+              <div className="flex-shrink-0 w-10 h-10 rounded flex items-center justify-center shadow-sm bg-white border border-gray-100">
+                <FileText size={20} style={{ color: brand.primary }} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold mb-1" style={{ color: brand.primary }}>4. Mileage Tracking</h3>
+                <p className="text-[13px] text-gray-700 leading-relaxed font-medium">
+                  Ensure the provider maintains and delivers accurate mileage records to support transparency, trip verification, and correct billing.
+                </p>
+              </div>
+            </div>
+
+            {/* Factor 5 */}
+            <div className="flex gap-4">
+              <div className="flex-shrink-0 w-10 h-10 rounded flex items-center justify-center shadow-sm bg-white border border-gray-100">
+                <Car size={20} style={{ color: brand.primary }} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold mb-1" style={{ color: brand.primary }}>5. Accessible, Sensory-Aware Rides</h3>
+                <p className="text-[13px] text-gray-700 leading-relaxed font-medium">
+                  Transportation should support both the physical and sensory needs of your individual. Ensure the provider offers wheelchair-accessible vehicles (WAVs) with spacious seating and a safe lift, as well as sensory-friendly interiors designed for comfort.
+                </p>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        {/* --- PAGE 3: INSIDE RIGHT (Right Side) --- */}
-        <div className="w-[595px] h-full relative p-14 flex flex-col bg-white">
+        {/* --- INSIDE RIGHT (Right Side): Who We Are & Why Ride --- */}
+        <div className="w-[595px] h-full relative p-12 flex flex-col bg-white">
           
-          {/* Factor 4 */}
-          <div className="relative mb-12">
-            <div className="absolute -top-10 -left-6 text-9xl font-black opacity-5" style={{ color: brand.primary }}>04</div>
-            <h3 className="text-3xl font-black mb-6 flex items-center gap-4 relative z-10" style={{ color: brand.primary }}>
-              <span className="bg-[#f8fafc] p-3 rounded-lg"><Clock size={32} style={{ color: brand.secondary }} /></span>
-              4. Accessible, Sensory Vehicles
+          {/* Who We Are */}
+          <div className="mb-8 p-6 rounded-lg bg-gray-50 border-l-4" style={{ borderColor: brand.secondary }}>
+            <h3 className="text-xl font-black mb-2 uppercase tracking-wide" style={{ color: brand.primary }}>
+              La Necar Logistics: Who We Are
             </h3>
-            
-            <div className="pl-4 border-l-4 mb-6" style={{ borderColor: brand.secondary }}>
-              <p className="text-gray-700 leading-relaxed font-medium">
-                The transit environment significantly impacts how an individual arrives at their destination. A suitable vehicle is:
-              </p>
-            </div>
-            
-            <ul className="space-y-4 mb-8">
-              <li className="bg-gray-50 p-4 rounded-lg flex items-start gap-4">
-                <div className="mt-1" style={{ color: brand.secondary }}><CheckCircle2 size={20} /></div>
-                <div>
-                  <strong className="block text-gray-900 mb-1">Wheelchair Accessible:</strong>
-                  <span className="text-sm text-gray-600">Equipped with reliable lifts or ramps and proper securement systems (e.g., Q-Straint) for foldable and non-foldable wheelchairs.</span>
-                </div>
-              </li>
-              <li className="bg-gray-50 p-4 rounded-lg flex items-start gap-4">
-                <div className="mt-1" style={{ color: brand.secondary }}><CheckCircle2 size={20} /></div>
-                <div>
-                  <strong className="block text-gray-900 mb-1">Sensory-Friendly:</strong>
-                  <span className="text-sm text-gray-600">Clean, climate-controlled, and designed to minimize sensory overload.</span>
-                </div>
-              </li>
-            </ul>
-            
-            <p className="text-sm text-gray-700 leading-relaxed bg-blue-50/50 p-5 rounded-xl font-medium border border-blue-100">
-              <strong style={{ color: brand.primary }}>Bonus Tip:</strong> Providers that coordinate with third-party ride-share companies (like Uber Health) can offer flexible alternatives for eligible individuals aged 21 and above, ensuring continuous mobility support at all times.
+            <p className="text-gray-700 leading-relaxed font-medium text-[13px]">
+              La Necar Logistics provides reliable transportation for individuals with intellectual and developmental disabilities. We serve individuals in all counties in New Jersey and surrounding areas with door-to-door rides that can be used for work, medical appointments, recreational activities, therapy, and community access.
             </p>
           </div>
 
-          {/* Factor 5 */}
-          <div className="relative mt-auto bg-slate-900 text-white p-10 rounded-2xl overflow-hidden shadow-xl">
-            <div className="absolute top-0 right-0 w-48 h-48 opacity-10">
-              <svg viewBox="0 0 100 100" className="w-full h-full fill-white"><circle cx="50" cy="50" r="50" /></svg>
-            </div>
-            
-            <div className="absolute -top-10 -left-6 text-9xl font-black opacity-10 text-white">05</div>
-            
-            <h3 className="text-3xl font-black mb-4 relative z-10 flex items-center gap-4">
-              <ShieldCheck size={36} style={{ color: brand.secondary }} />
-              5. Safety First, Always
+          <div className="flex-1 flex flex-col">
+            <h3 className="text-xl font-black mb-5 uppercase tracking-wide border-b-2 border-gray-100 pb-2" style={{ color: brand.primary }}>
+              WHY RIDE WITH LA NECAR
             </h3>
-            <p className="text-slate-300 leading-relaxed relative z-10 font-medium">
-              At La Necar Logistics, we train our drivers to recognize person-centered regulation needs and adjust support to promote comfort and safety during rides.
-            </p>
-            <div className="w-12 h-1 mt-6 mb-6 relative z-10" style={{ backgroundColor: brand.secondary }}></div>
-            <p className="text-slate-300 leading-relaxed relative z-10">
-              With specialized expertise in behavioral and communication support, our CPR-certified drivers ensure every rider is treated with respect, dignity, and care.
-            </p>
+
+            <div className="flex flex-col gap-5 flex-1 justify-center">
+              
+              <div className="flex items-start gap-3">
+                <CheckCircle2 size={20} className="shrink-0 mt-0.5" style={{ color: brand.secondary }} />
+                <div>
+                  <h4 className="font-bold text-[15px] text-gray-900 mb-0.5">Full Trip Visibility</h4>
+                  <p className="text-[13px] text-gray-600 leading-relaxed">
+                    We monitor all our vehicles in real-time and provide instant ride updates on pickup & drop‑off, keeping families and caregivers reassured every step of the way.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <CheckCircle2 size={20} className="shrink-0 mt-0.5" style={{ color: brand.secondary }} />
+                <div>
+                  <h4 className="font-bold text-[15px] text-gray-900 mb-0.5">Third-party Ride-Share Coordination</h4>
+                  <p className="text-[13px] text-gray-600 leading-relaxed">
+                    La Necar Logistics partners with third-party ride-share services such as Uber Health to provide transportation for eligible individuals aged 21 and above, supporting flexible mobility.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <CheckCircle2 size={20} className="shrink-0 mt-0.5" style={{ color: brand.secondary }} />
+                <div>
+                  <h4 className="font-bold text-[15px] text-gray-900 mb-0.5">Wheelchair Accessibility/Sensory-Awareness</h4>
+                  <p className="text-[13px] text-gray-600 leading-relaxed">
+                    Our spacious wheelchair-accessible and sensory-friendly vehicles are designed to meet the unique needs of every individual, ensuring comfortable travel and steady community engagement.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <CheckCircle2 size={20} className="shrink-0 mt-0.5" style={{ color: brand.secondary }} />
+                <div>
+                  <h4 className="font-bold text-[15px] text-gray-900 mb-0.5">Trained, Specialized Drivers</h4>
+                  <p className="text-[13px] text-gray-600 leading-relaxed">
+                    All La Necar drivers are CPR certified and trained to recognize person-centered regulation needs and adjust support to promote comfort and safety during rides.
+                  </p>
+                </div>
+              </div>
+
+            </div>
           </div>
           
+          {/* Bottom supporting image */}
+          <div className="h-32 mt-6 rounded-lg overflow-hidden relative shadow-sm">
+            <img 
+              src={images.caring} 
+              alt="Professional transportation services" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+          </div>
+
         </div>
       </div>
 
